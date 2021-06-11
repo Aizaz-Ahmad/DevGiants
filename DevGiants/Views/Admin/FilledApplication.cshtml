@@ -1,0 +1,144 @@
+﻿@model DevGiants.Models.JobApplication 
+@{ 
+    Func<bool, string> isChecked = a => a ? "checked" : null;
+}
+<main class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+               <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="text-uppercase ml-4">Application Id: @Model.ApplicationId</h5>
+                    <div class="d-flex flex-column">
+                        <div class="upload-img justify-content-center d-flex align-items-center font-weight-bold">
+                            <img class="img-fluid" src="~/UploadedFiles/@Model.Filename" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="name">Name</label>
+                        <input type="text" value="@Model.Name" class="form-control" disabled>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="fathername">Father's Name</label>
+                        <input type="text" value="@Model.Fathername" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="placeofposting">Place of Posting</label>
+                        <input type="text" value="@Model.Placeofposting" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="appliedfor">Post Applied For</label>
+                        <input type="text" value="@Model.Appliedfor" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="dob">Date of Birth</label>
+                        <input type="text" value="@Model.Dob" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="ageinyear">Age in Years and Months</label>
+                        <input type="text" value="@Model.Ageinyear" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="cnic">CNIC</label>
+                        <input type="text" value="@Model.Cnic" class="form-control" disabled/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="domicile">Domicile (District)</label>
+                        <input type="text" value="@Model.Domicile" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="contact">Contact No.</label>
+                        <input type="text" value="@Model.Contact" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="otherContact">Other Contact No.</label>
+                        <input type="text" value="@Model.OtherContact" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="postalAddress">Postal Address</label>
+                        <input type="text" value="@Model.PostalAddress" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="permanentAddress">Permanent Address</label>
+                        <input type="text" value="@Model.PermanentAddress" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-12">
+                        <label for="email">Email</label>
+                        <input type="email" value="@Model.Email" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Already in Govt. Service</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" @isChecked(Model.Already) disabled/>
+                            <label for="already-yes" class="form-check-label ml-3">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" @isChecked(!Model.Already) disabled/>
+                            <label for="already-no" class="form-check-label ml-3">No</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Disabliity</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" @isChecked(Model.Disability) disabled />
+                            <label for="disability-yes" class="form-check-label ml-3">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" @isChecked(!Model.Disability) disabled/>
+                            <label for="disability-no" class="form-check-label ml-3">No</label>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-0" />
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Hafiz-e-Quran</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" @isChecked(Model.Hafiz) disabled />
+                            <label for="hafiz-yes" class="form-check-label ml-3">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" @isChecked(!Model.Hafiz) disabled />
+                            <label for="hafiz-no" class="form-check-label ml-3">No</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Marital Status</label><br />
+                        <div class="form-check form-check-inline">
+                            <input type="radio" @isChecked(Model.Marital) disabled/>
+                            <label for="marital-yes" class="form-check-label ml-3">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" @isChecked(!Model.Marital) disabled />
+                            <label for="marital-no" class="form-check-label ml-3">No</label>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-0" />
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="gender">Gender</label>
+                        <input type="text" value="@Model.Gender" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="religion">Religion</label>
+                        <input type="text" value="@Model.Religion" class="form-control" disabled />
+                    </div>
+                </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,25 @@
+﻿@{
+    Layout = "_Layout";
+}
+<main class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <h2 class="text-center">Admin Login</h2>
+            @if (TempData.ContainsKey("errorMessage"))
+            {
+                <div class="alert alert-danger">@TempData["errorMessage"]</div>
+            }
+            <form action="LoginCheck" method="POST" onsubmit="startLoader()">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" class="form-control" required value="aizazahmad"/>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" class="form-control" required  value="aizaz"/>
+                </div>
+                <button class="btn btn-warning btn-block">Login</button>
+            </form>
+        </div>
+    </div>
+</main>

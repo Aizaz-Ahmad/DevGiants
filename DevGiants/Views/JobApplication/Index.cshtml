@@ -1,0 +1,173 @@
+﻿@{ 
+    Layout = "_Layout";
+}
+<main class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 shadow-lg rounded-lg py-3">
+
+            <form method="POST" action="/JobApplication/saveForm" enctype="multipart/form-data">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="text-uppercase ml-4">Job Application Form</h2>
+                    <div class="d-flex flex-column">
+                        <div class="upload-img justify-content-center d-flex align-items-center font-weight-bold">
+                            <span id="filename1" class="text-break">Upload Photo</span>
+                            <input type="file" name="filename" accept=".png, .jpg, .jpeg" required onchange="filename1.innerText = this.files[0].name" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" class="form-control" required>
+                        @*<small id="required-name" class="error text-danger">Must Enter Name</small>*@
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="fathername">Father's Name</label>
+                        <input type="text" name="fathername" id="fathername" class="form-control" required />
+                        @*<small id="required-fathername" class="error text-danger">Must Enter Father's Name</small>*@
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="placeofposting">Place of Posting</label>
+                        <input type="text" name="placeofposting" id="placeofposting" class="form-control" required />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="appliedfor">Post Applied For</label>
+                        <input type="text" name="appliedfor" id="appliedfor" class="form-control" required />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" name="dob" id="dob" class="form-control" required onchange="calculateAge(this)" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="ageinyear">Age in Years and Months</label>
+                        <input type="text" name="ageinyear" id="ageinyear" class="form-control disabled" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="cnic">CNIC (XXXXX-XXXXXXX-X)</label>
+                        <input type="text" name="cnic" id="cnic" class="form-control"
+                               required
+                               pattern="[0-9]{5}-[0-9]{7}-[0-9]"
+                               placeholder="XXXXX-XXXXXXX-X" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="domicile">Domicile (District)</label>
+                        <input type="text" name="domicile" id="domicile" class="form-control" required/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="contact">Contact No. (XXXX-XXXXXXX)</label>
+                        <input type="text" name="contact" id="contact" class="form-control" required pattern="[0-9]{4}-[0-9]{7}"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="otherContact">Other Contact No. (XXXX-XXXXXXX)</label>
+                        <input type="text" name="otherContact" id="otherContact" class="form-control" pattern="[0-9]{4}-[0-9]{7}"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="postalAddress">Postal Address</label>
+                        <input type="text" name="postalAddress" id="postalAddress" class="form-control" required/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="permanentAddress">Permanent Address</label>
+                        <input type="text" name="permanentAddress" id="permanentAddress" class="form-control" required />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-12">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" class="form-control" required />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Already in Govt. Service</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="already" id="already-yes" value="true" />
+                            <label for="already-yes" class="form-check-label ml-3">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="already" id="already-no" value="false" />
+                            <label for="already-no" class="form-check-label ml-3">No</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Disabliity</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="disability" id="disability-yes" value="true" />
+                            <label for="disability-yes" class="form-check-label ml-3">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="disability" id="disability-no" value="false" />
+                            <label for="disability-no" class="form-check-label ml-3">No</label>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-0"/>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Hafiz-e-Quran</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="hafiz" id="hafiz-yes" value="true" />
+                            <label for="hafiz-yes" class="form-check-label ml-3">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="hafiz" id="hafiz-no" value="false" />
+                            <label for="hafiz-no" class="form-check-label ml-3">No</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Marital Status</label><br />
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="marital" id="marital-yes" value="true" />
+                            <label for="marital-yes" class="form-check-label ml-3">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="marital" id="marital-no" value="false" />
+                            <label for="marital-no" class="form-check-label ml-3">No</label>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-0" />
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="gender">Gender</label>
+                        <select name="gender" id="gender" required class="form-control">
+                            <option selected disabled value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="religion">Religion</label>
+                        <input type="text" name="religion" id="religion" class="form-control" required />
+                    </div>
+                </div>
+                <button class="btn btn-block btn-outline-success">Submit</button>
+            </form>
+        </div>
+    </div>
+</main>
+<script>
+    let datenow = new Date()
+    dob.setAttribute('max', `${datenow.getFullYear()}-${("0" + datenow.getMonth()).slice(-2)}-${("0" + datenow.getDate()).slice(-2)}`)
+    const calculateAge = (ele) => {
+        let dob = new Date(ele.value)
+        let datems = Date.now()
+        let age = new Date(datems - dob)
+        let year = age.getFullYear() - 1970
+        let month = age.getMonth() - 1
+        if (year == 0 && month > 0)
+            ageinyear.value = `${ month } Months`
+        else
+            ageinyear.value = `${year > 0 ? year + ' Years' : ''} ${month > 0 ? `and ${month} Months` : ''}`
+    }
+</script>

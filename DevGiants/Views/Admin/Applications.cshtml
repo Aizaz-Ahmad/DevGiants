@@ -1,0 +1,90 @@
+﻿@model List<DevGiants.Models.JobApplication>
+@{
+    Layout = "_Layout";
+}
+<main class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2>Job Applications</h2>
+            <table class="table table-bordered table-dark table-striped table-hover mt-3">
+                <thead class="text-center">
+                    <tr>
+                        <th>Application ID</th>
+                        <th>Applicant Name</th>
+                        <th>Applied On</th>
+                        <th>View Application</th>
+                        <th>Delete Application</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DevGiants.Models.JobApplication application in Model)
+                    {
+                        <tr>
+                            <td>@application.ApplicationId</td>
+                            <td>@application.Name</td>
+                            <td>@application.AppliedAt</td>
+                            <td><button class="btn btn-warning btn-block" data-view-id="@application.ApplicationId">View</button></td>
+                            <td><button class="btn btn-danger btn-block" data-delete-id="@application.ApplicationId">Delete</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<button type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#exampleModalLong">
+    Launch demo modal
+</button>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Job Application</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{ 
+<script>
+    $("[data-delete-id]").click(async e => {
+        if (!confirm("Are you sure you want to delete this Application?")) return;
+        let delId = e.target.getAttribute("data-delete-id");
+        try {
+            let data = await $.ajax("/Admin/deleteApplication", {
+                method: "DELETE",
+                data: { applicationID: delId },
+                dataType: "json"
+            })
+            alert(data.msg);
+            e.target.parentElement.parentElement.remove();
+        }
+        catch (err) {
+            alert(err.responseJSON.msg);
+        }
+    })
+    $("[data-view-id]").click(async e => {
+        let delId = e.target.getAttribute("data-view-id");
+        try {
+            let data = await $.ajax("/Admin/getApplicationView", {
+                method: "POST",
+                data: { applicationID: delId }
+            })
+            $('.modal-body').html(data);
+            $(`[data-target="#exampleModalLong"]`).click();
+        }
+        catch (err) {
+            $('.modal-body').html(`<div class="alert alert-danger">${err.responseJSON.msg}</div>`);
+            $(`[data-target="#exampleModalLong"]`).click();
+        }
+    })
+</script>
+}
