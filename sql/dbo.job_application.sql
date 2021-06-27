@@ -1,0 +1,26 @@
+CREATE TABLE [dbo].[job_application] (
+    [application_id]   INT           IDENTITY (1, 1) NOT NULL,
+    [filename]         VARCHAR (100) NOT NULL,
+    [name]             VARCHAR (100) NOT NULL,
+    [fathername]       VARCHAR (50)  NOT NULL,
+    [placeofposting]   VARCHAR (50)  NOT NULL,
+    [appliedfor]       VARCHAR (50)  NOT NULL,
+    [dob]              VARCHAR (50)  NOT NULL,
+    [ageinyear]        VARCHAR (50)  NOT NULL,
+    [cnic]             VARCHAR (50)  NOT NULL,
+    [domicile]         VARCHAR (50)  NOT NULL,
+    [contact]          VARCHAR (50)  NOT NULL,
+    [otherContact]     VARCHAR (50)  NULL,
+    [postalAddress]    VARCHAR (50)  NOT NULL,
+    [permanentAddress] VARCHAR (50)  NOT NULL,
+    [email]            VARCHAR (50)  NOT NULL,
+    [already]          BIT           NOT NULL,
+    [disability]       BIT           NOT NULL,
+    [hafiz]            BIT           NOT NULL,
+    [marital]          BIT           NOT NULL,
+    [gender]           VARCHAR (10)  NOT NULL,
+    [religion]         VARCHAR (50)  NOT NULL,
+    [applied_at]       DATETIME      DEFAULT (getdate()) NOT NULL,
+    PRIMARY KEY CLUSTERED ([application_id] ASC)
+);
+
