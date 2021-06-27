@@ -24,7 +24,9 @@ namespace DevGiants.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-               optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Initial Catalog=DevGiants;Integrated Security=True;");
+                //Server=(localdb)\\MSSQLLocalDB;Initial Catalog=DevGiants;Integrated Security=True;
+                //Data Source=SQL5080.site4now.net;Initial Catalog=db_a76290_aizazahmad;User Id=db_a76290_aizazahmad_admin;Password=KbqPuB8u.jpb2*i
+                optionsBuilder.UseSqlServer("Data Source=SQL5053.site4now.net;Initial Catalog=db_a76711_bsef18m503;User Id=db_a76711_bsef18m503_admin;Password=j4K4VKztP@w.uyS;");
             }
         }
 

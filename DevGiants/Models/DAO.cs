@@ -7,24 +7,7 @@ namespace DevGiants.Models
 {
     public class DAO
     {
-        //public static string UploadFileToFolder(Microsoft.AspNetCore.Http.IFormFile formFile, string folderLink)
-        //{
-        //    try
-        //    {
-        //        string filename = Path.GetFileName(formFile.FileName);
-        //        string path = Path.Combine(folderLink, filename);
-        //        int count = 1;
-        //        while (File.Exists(path))
-        //            path = Path.Combine(Path.GetFullPath("UploadedFiles"), $"{Path.GetFileNameWithoutExtension(filename)} ({count++}){Path.GetExtension(filename)}");
-        //        FileStream fileStream = new FileStream(path, FileMode.CreateNew, FileAccess.Write);
-        //        formFile.CopyTo(fileStream);
-        //        return Path.GetFileName(path);
-        //    }
-        //    catch (Exception e)
-        //    { 
-        //        throw e;
-        //    }
-        //}
+       
         public static void saveApplicationToDb(JobApplication application)
         {
             try
@@ -47,6 +30,7 @@ namespace DevGiants.Models
             {
                 using (DevGiantsContext db = new DevGiantsContext())
                 {
+                    
                     dbAdmin = db.Admins.FirstOrDefault(ad => ad.Username == admin.Username && ad.Password == admin.Password);
                 }
             }
@@ -96,6 +80,23 @@ namespace DevGiants.Models
                     return application;
                 }
             }catch(Exception e)
+            {
+                throw e;
+            }
+        }
+        
+        public static bool updateApplication(JobApplication application)
+        {
+            try
+            {
+                using (DevGiantsContext db = new DevGiantsContext())
+                {
+                    db.JobApplications.Update(application);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception e)
             {
                 throw e;
             }

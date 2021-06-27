@@ -5,10 +5,33 @@ using System.Linq;
 using System.Threading.Tasks;
 using DevGiants.Models;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 namespace DevGiants.Controllers
 {
     public class AdminController : Controller
     {
+        private static string UploadFileToFolder(Microsoft.AspNetCore.Http.IFormFile formFile, string folderLink)
+        {
+            try
+            {
+
+                string filename = Path.GetFileName(formFile.FileName);
+                string path = Path.Combine(
+                  Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles",
+                  filename);
+                int count = 1;
+                while (System.IO.File.Exists(path))
+                    path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles",
+                        $"{Path.GetFileNameWithoutExtension(filename)} ({count++}){Path.GetExtension(filename)}");
+                FileStream fileStream = new FileStream(path, FileMode.CreateNew, FileAccess.Write);
+                formFile.CopyTo(fileStream);
+                return Path.GetFileName(path);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
         public IActionResult Index()
         {
             return RedirectToAction("Login");
@@ -90,7 +113,7 @@ namespace DevGiants.Controllers
             }
         }
         [HttpPost]
-        public IActionResult getApplicationView(int applicationID)
+        public IActionResult getApplicationView(int applicationID, bool edit)
         {
             if (HttpContext.Session.GetInt32("user_id") == null)
             {
@@ -108,12 +131,41 @@ namespace DevGiants.Controllers
                 else
                 {
                     Response.StatusCode = 200;
+                    ViewBag.edit = edit;
                     return View("FilledApplication", application);
                 }
-            }catch(Exception)
+            }catch(Exception e)
             {
                 Response.StatusCode = 500;
                 return Json(new { error = true, msg = "An Error Occured while retrieving application" });
+            }
+        }
+        [HttpPost]
+        public IActionResult editApplication(JobApplication application)
+        {
+            if (HttpContext.Session.GetInt32("user_id") == null)
+            {
+                return RedirectToAction("Login");
+            }
+            try
+            {
+                JobApplication prev = DAO.GetJobApplication(application.ApplicationId);
+                if (Request.Form.Files.Count != 0)
+                    application.Filename = UploadFileToFolder(Request.Form.Files[0], Url.Content("~/UploadedFiles"));
+                else
+                    application.Filename = prev.Filename;
+                application.AppliedAt = prev.AppliedAt;
+                if (DAO.updateApplication(application))
+                {
+                    TempData["editMsg"] = $"Application with ID: {application.ApplicationId} successfully Edited";
+                    return RedirectToAction("Applications");
+                }
+                throw new Exception();
+            }
+            catch (Exception)
+            {
+                TempData["editMsg"] = "An Erorr Occured while editing Application, Try Again";
+                return RedirectToAction("Applications");
             }
         }
     }

@@ -1,104 +1,129 @@
-﻿@model DevGiants.Models.JobApplication 
+﻿@model DevGiants.Models.JobApplication
 @{ 
     Func<bool, string> isChecked = a => a ? "checked" : null;
+    Func<string> isDisabled = () => !ViewBag.edit ? "disabled" : null;
+    string required = ViewBag.edit ? "required" : "";
 }
-<main class="container-fluid mt-5">
+<main class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12">
-               <div class="d-flex justify-content-between align-items-center mb-4">
+            <form method="POST" id="editForm" action="/Admin/editApplication" enctype="multipart/form-data" onsubmit="startLoader()">
+                <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="text-uppercase ml-4">Application Id: @Model.ApplicationId</h5>
+                    <input type="hidden" name="ApplicationId" value="@Model.ApplicationId" />
                     <div class="d-flex flex-column">
-                        <div class="upload-img justify-content-center d-flex align-items-center font-weight-bold">
-                            <img class="img-fluid" src="~/UploadedFiles/@Model.Filename" />
+                        @if (ViewBag.edit)
+                        {
+                            <small>Click on the box <br />below to upload new Image</small>
+                        }
+                        <div class="upload-img justify-content-center d-flex align-items-center font-weight-bold ml-auto">
+                            @if (!ViewBag.edit)
+                            {
+                                <img class="img-fluid" src="~/UploadedFiles/@Model.Filename" />
+                            }
+                            else
+                            {
+                                <label id="filename1" class="text-break required">@Model.Filename</label>
+                                <input type="file" name="filename" accept=".png, .jpg, .jpeg" onchange="filename1.innerText = this.files[0].name" />
+                            }
                         </div>
                     </div>
                 </div>
+                @if (ViewBag.edit)
+                {
+                <p style="color:red;">* Required</p>
+                }
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="name">Name</label>
-                        <input type="text" value="@Model.Name" class="form-control" disabled>
+                        <label for="name" class="@required">Name</label>
+                        <input type="text" name="name" id="name" required value="@Model.Name" class="form-control" @isDisabled()>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="fathername">Father's Name</label>
-                        <input type="text" value="@Model.Fathername" class="form-control" disabled />
+                        <label for="fathername" class="@required">Father's Name</label>
+                        <input type="text" name="fathername" id="fathername" required value="@Model.Fathername" class="form-control" @isDisabled() />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="placeofposting">Place of Posting</label>
-                        <input type="text" value="@Model.Placeofposting" class="form-control" disabled />
+                        <label for="placeofposting" class="@required">Place of Posting</label>
+                        <input type="text" name="placeofposting" id="placeofposting" required value="@Model.Placeofposting" class="form-control" @isDisabled() />
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="appliedfor">Post Applied For</label>
-                        <input type="text" value="@Model.Appliedfor" class="form-control" disabled />
+                        <label for="appliedfor" class="@required">Post Applied For</label>
+                        <input type="text" name="appliedfor" id="appliedfor" required value="@Model.Appliedfor" class="form-control" @isDisabled() />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="dob">Date of Birth</label>
-                        <input type="text" value="@Model.Dob" class="form-control" disabled />
+                        <label for="dob" class="@required">Date of Birth</label>
+                        <input type="date" id="dob" name="dob" required onchange="calculateAge(this)" value="@Model.Dob" class="form-control" @isDisabled() />
                     </div>
                     <div class="form-group col-md-6">
                         <label for="ageinyear">Age in Years and Months</label>
-                        <input type="text" value="@Model.Ageinyear" class="form-control" disabled />
+                        <input type="text" id="ageinyear" name="ageinyear" readonly value="@Model.Ageinyear" class="form-control" @isDisabled() />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="cnic">CNIC</label>
-                        <input type="text" value="@Model.Cnic" class="form-control" disabled/>
+                        <label for="cnic" class="@required">CNIC</label>
+                        <input type="text" id="cnic" name="cnic" required pattern="[0-9]{5}-[0-9]{7}-[0-9]"
+                               placeholder="XXXXX-XXXXXXX-X" value="@Model.Cnic" class="form-control" @isDisabled() />
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="domicile">Domicile (District)</label>
-                        <input type="text" value="@Model.Domicile" class="form-control" disabled />
+                        <label for="domicile" class="@required">Domicile (District)</label>
+                        <input type="text" id="domicile" name="domicile" required value="@Model.Domicile" class="form-control" @isDisabled() />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="contact">Contact No.</label>
-                        <input type="text" value="@Model.Contact" class="form-control" disabled />
+                        <label for="contact" class="@required">Contact No.</label>
+                        <input type="text" name="contact" id="contact" required 
+                               pattern="[0-9]{4}-[0-9]{7}" value="@Model.Contact" class="form-control" @isDisabled() />
+                        <small> Format: (XXXX-XXXXXXX) </small>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="otherContact">Other Contact No.</label>
-                        <input type="text" value="@Model.OtherContact" class="form-control" disabled />
+                        <input type="text" id="otherContact" name="otherContact"
+                              pattern="[0-9]{4}-[0-9]{7}" value="@Model.OtherContact" class="form-control" @isDisabled() />
+                        <small> Format: (XXXX-XXXXXXX) </small>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="postalAddress">Postal Address</label>
-                        <input type="text" value="@Model.PostalAddress" class="form-control" disabled />
+                        <label for="postalAddress" class="@required">Postal Address</label>
+                        <input type="text" name="postalAddress" id="postalAddress" required value="@Model.PostalAddress" class="form-control" @isDisabled() />
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="permanentAddress">Permanent Address</label>
-                        <input type="text" value="@Model.PermanentAddress" class="form-control" disabled />
+                        <label for="permanentAddress" class="@required">Permanent Address</label>
+                        <input type="text" name="permanentAddress" id="permanentAddress" required value="@Model.PermanentAddress" class="form-control" @isDisabled() />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-12">
-                        <label for="email">Email</label>
-                        <input type="email" value="@Model.Email" class="form-control" disabled />
+                        <label for="email" class="@required">Email</label>
+                        <input type="email" id="email" name="email" required value="@Model.Email" class="form-control" @isDisabled() />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label>Already in Govt. Service</label><br>
+                        <label class="@required">Already in Govt. Service</label><br>
                         <div class="form-check form-check-inline">
-                            <input type="radio" @isChecked(Model.Already) disabled/>
+                            <input type="radio" id="already-yes" value="true" name="already" @isChecked(Model.Already) @isDisabled() />
                             <label for="already-yes" class="form-check-label ml-3">Yes</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" @isChecked(!Model.Already) disabled/>
+                            <input type="radio" id="already-no" value="false" name="already" @isChecked(!Model.Already) @isDisabled() />
                             <label for="already-no" class="form-check-label ml-3">No</label>
                         </div>
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Disabliity</label><br>
+                        <label class="@required">Disabliity</label><br>
                         <div class="form-check form-check-inline">
-                            <input type="radio" @isChecked(Model.Disability) disabled />
+                            <input type="radio" value="true" id="disability-yes" name="disability" @isChecked(Model.Disability) @isDisabled() />
                             <label for="disability-yes" class="form-check-label ml-3">Yes</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" @isChecked(!Model.Disability) disabled/>
+                            <input type="radio" value="false" id="disability-no" name="disability" @isChecked(!Model.Disability) @isDisabled() />
                             <label for="disability-no" class="form-check-label ml-3">No</label>
                         </div>
                     </div>
@@ -106,24 +131,24 @@
                 <hr class="mt-0" />
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label>Hafiz-e-Quran</label><br>
+                        <label class="@required">Hafiz-e-Quran</label><br>
                         <div class="form-check form-check-inline">
-                            <input type="radio" @isChecked(Model.Hafiz) disabled />
+                            <input type="radio" value="true" id="hafiz-yes" name="hafiz" @isChecked(Model.Hafiz) @isDisabled() />
                             <label for="hafiz-yes" class="form-check-label ml-3">Yes</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" @isChecked(!Model.Hafiz) disabled />
+                            <input type="radio" value="false" id="hafiz-no" name="hafiz" @isChecked(!Model.Hafiz) @isDisabled() />
                             <label for="hafiz-no" class="form-check-label ml-3">No</label>
                         </div>
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Marital Status</label><br />
+                        <label class="@required">Marital Status</label><br />
                         <div class="form-check form-check-inline">
-                            <input type="radio" @isChecked(Model.Marital) disabled/>
+                            <input type="radio" value="true" id="marital-yes" name="marital" @isChecked(Model.Marital) @isDisabled() />
                             <label for="marital-yes" class="form-check-label ml-3">Yes</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" @isChecked(!Model.Marital) disabled />
+                            <input type="radio" value="false" id="marital-no" name="marital" @isChecked(!Model.Marital) @isDisabled() />
                             <label for="marital-no" class="form-check-label ml-3">No</label>
                         </div>
                     </div>
@@ -131,14 +156,36 @@
                 <hr class="mt-0" />
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="gender">Gender</label>
-                        <input type="text" value="@Model.Gender" class="form-control" disabled />
+                        <label class="@required" for="gender">Gender</label>
+                        <select name="gender" value="@Model.Gender" id="gender" @isDisabled() required class="form-control">
+                            <option disabled value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="religion">Religion</label>
-                        <input type="text" value="@Model.Religion" class="form-control" disabled />
+                        <label class="@required" for="religion">Religion</label>
+                        <input type="text" id="religion" name="religion" required value="@Model.Religion" class="form-control" @isDisabled() />
                     </div>
                 </div>
+                @if (ViewBag.edit)
+                {
+                    <button class="btn btn-block btn-outline-success">Submit</button>
+                }
+            </form>
         </div>
     </div>
 </main>
+<script>
+    let datenow = new Date()
+    dob.setAttribute('max', `${datenow.getFullYear()}-${("0" + datenow.getMonth()).slice(-2)}-${("0" + datenow.getDate()).slice(-2)}`)
+    const calculateAge = (ele) => {
+        let dob = new Date(ele.value)
+        let datems = Date.now()
+        let age = new Date(datems - dob)
+        let year = age.getFullYear() - 1970
+        let month = age.getMonth() - 1
+        ageinyear.value = `${year} Years, ${month} Months, and ${age.getDay()} Days }`
+    }
+</script>
