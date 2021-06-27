@@ -33,10 +33,10 @@ Click on DevGiants.sln file to open up the project in Visual Studio.
 <li>
  Remember you should have ASP .NET Toolset downloaded for Visual Studio to run this Website.  
 </li>
-<li>After this you have to setup the database. Download this <a href="dividite.sql">SQL file</a>. Visit <a href="https://localhost/phpmyadmin">localhost/phpmyadmin</a> and create new database having name "dividite" and import this SQL file</li>
-<li>After this you would be able to access the website by opening the following link in your browser <a href="https://localhost/DIVIDITE">localhost/DIVIDITE</a></li>
+<li>After this you have to setup the database. Use the SQL code from the SQL files inside SQL directory. Use SQL Server Management Studio or Inbuilt SQL Server Object Explorer and create new database having name "DevGiants" and run the queries inside the SQL Files</li>
+<li>After this you would be able to access the website by running the IIS by pressing F5 in Visual Studio</li>
 <li>Go to Login Page and Login using these fake credentials<br />
-<b style="display:block;text-align:center;">Email: bitf18m590@pucit.edu.pk, Password: itman9089@</b>
+<b style="display:block;text-align:center;">Username: aizazahmad, Password: aizaz</b>
 </li>
 <li>Now, you are good to go and explore the features 🧨</li>
 </ol>
